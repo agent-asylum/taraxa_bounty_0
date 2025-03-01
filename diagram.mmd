@@ -1,0 +1,19 @@
+graph TD
+  RetryRound
+  FinishedDeploymentRound
+  PersonaGenerationRound
+  InitializationRound
+  RetryRound
+  TrendDetectionRound
+  MemecoinDeploymentRound
+  InitializationRound -->|DONE| TrendDetectionRound
+  TrendDetectionRound -->|TREND_DETECTED| PersonaGenerationRound
+  TrendDetectionRound -->|NO_TREND| RetryRound
+  TrendDetectionRound -->|ERROR| RetryRound
+  RetryRound -->|RETRY| TrendDetectionRound
+  RetryRound -->|MAX_RETRIES| InitializationRound
+  PersonaGenerationRound -->|PERSONA_GENERATED| MemecoinDeploymentRound
+  PersonaGenerationRound -->|GENERATION_ERROR| RetryRound
+  MemecoinDeploymentRound -->|DEPLOYMENT_SUCCESS| FinishedDeploymentRound
+  MemecoinDeploymentRound -->|DEPLOYMENT_ERROR| RetryRound
+  FinishedDeploymentRound -->|DONE| InitializationRound

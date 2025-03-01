@@ -1,0 +1,35 @@
+alphabet_in:
+- RETRY
+- GENERATION_ERROR
+- DEPLOYMENT_SUCCESS
+- NO_TREND
+- DONE
+- TREND_DETECTED
+- MAX_RETRIES
+- ERROR
+- PERSONA_GENERATED
+- DEPLOYMENT_ERROR
+default_start_state: RetryRound
+final_states: []
+label: taraxa0AbciApp
+start_states:
+- RetryRound
+states:
+- FinishedDeploymentRound
+- PersonaGenerationRound
+- InitializationRound
+- RetryRound
+- TrendDetectionRound
+- MemecoinDeploymentRound
+transition_func:
+  (FinishedDeploymentRound, DONE): InitializationRound
+  (InitializationRound, DONE): TrendDetectionRound
+  (MemecoinDeploymentRound, DEPLOYMENT_ERROR): RetryRound
+  (MemecoinDeploymentRound, DEPLOYMENT_SUCCESS): FinishedDeploymentRound
+  (PersonaGenerationRound, GENERATION_ERROR): RetryRound
+  (PersonaGenerationRound, PERSONA_GENERATED): MemecoinDeploymentRound
+  (RetryRound, MAX_RETRIES): InitializationRound
+  (RetryRound, RETRY): TrendDetectionRound
+  (TrendDetectionRound, ERROR): RetryRound
+  (TrendDetectionRound, NO_TREND): RetryRound
+  (TrendDetectionRound, TREND_DETECTED): PersonaGenerationRound
